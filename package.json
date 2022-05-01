@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.3",
+    "@firebase/app": "^0.7.21",
+    "@firebase/database": "^0.12.8",
+    "@firebase/database-types": "^0.9.7",
+    "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -10,8 +15,13 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "autoprefixer": "^10.4.5",
+    "papaparse": "^5.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.30.0",
+    "react-redux": "^8.0.1",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
@@ -39,5 +49,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.2",
+    "postcss": "^8.4.13",
+    "tailwindcss": "^3.0.24"
   }
 }
