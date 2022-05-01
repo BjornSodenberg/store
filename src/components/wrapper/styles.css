@@ -1,0 +1,29 @@
+
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-menu {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    height: calc(100vh-16px);
+    flex: 1;
+    max-width: 300px;
+    background-color: #e9c46a;
+    border-radius: 0 32px 32px 0;
+    margin: 16px 0 16px 0;
+}
+
+.right-content {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    height: calc(100vh-16px);
+    flex: 1;
+    margin: 16px;
+    background-color: #ffffff;
+    border-radius: 32px;
+}

@@ -1,0 +1,36 @@
+* {
+    outline: none;
+}
+
+.search-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    margin: 32px;
+}
+
+.search {
+    flex: 1;
+    height: 44px;
+    border-radius: 16px;
+    border: none;
+    background-color: #e5e5e5;
+    font-size: 16px;
+    padding-left: 24px;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
+.button {
+    position: absolute;
+    right: 0px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    background-color: #e76f51;
+    border-radius: 16px;
+    color: white;
+}
