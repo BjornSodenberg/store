@@ -94,5 +94,42 @@ export const deleteUser = async (id: number) => {
   }
 }
 
+export const transfer = async (userFrom: User, userTo: User, count: number) => {
+  const transferResult = userFrom.lemons - count;
+  if (transferResult < 0) {
+    return {
+      code: 500,
+      message: 'У сотрудника недостаточно лимонов для перевода.'
+    } 
+  }
+
+  const userFrom_upd = {
+    ...userFrom,
+    lemons: transferResult
+  }
+
+  const userTo_upd = {
+    ...userTo,
+    lemons: userTo.lemons + count
+  }
+
+  try {
+    await updateUser(userFrom_upd);
+    await updateUser(userTo_upd);
+  } catch (e) {
+    console.log(e)
+    return {
+      code: 500,
+      message: 'Ошибка перевода. Обратитесь в поддержку.'
+    }
+  }
+
+  return {
+    code: 200,
+    message: 'Перевод успешно отправлен.'
+  }
+
+}
+
 export default database;
 

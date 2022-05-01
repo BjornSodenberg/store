@@ -1,0 +1,54 @@
+.transfer-wrapper {
+    margin: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.transfer-from, .transfer-to, .transfer-sum {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+}
+
+.transfer-form {
+    position: relative;
+}
+
+.user-transfer-info {
+    position: absolute;
+    right: 70px;
+}
+
+.label{
+    font-weight: bold;
+    width: 100px
+}
+
+.transfer-input {
+    flex: 1;
+    border-radius: 16px;
+    border: none;
+    background-color: #e5e5e5;
+    font-size: 16px;
+    padding-left: 24px;
+}
+
+.lemons-count {
+    font-weight: bold;
+}
+
+.submit-transfer {
+    margin-top: 24px;
+    height: 44px;
+    width: 244px;
+    float: right;
+    border: none;
+    background-color: #2a9d8f;
+    color: white;
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+.status {
+    float: left;
+}

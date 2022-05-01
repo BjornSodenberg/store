@@ -11,6 +11,7 @@ import UpdateUserForm from './components/update-user';
 import reportWebVitals from './reportWebVitals';
 import PostForm from './components/post-new-user';
 import DeleteUser from './components/delete-user';
+import TransferPage from './components/transfer-lemons';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.render(
             <Route path="user-wallet" element={<UpdateUserForm />} />
             <Route path="create-new-user" element={<PostForm />} />
             <Route path="delete-user" element={<DeleteUser />} />
+            <Route path="transfer" element={<TransferPage />} />
         </Routes>
       </BrowserRouter>
   </React.StrictMode>,
