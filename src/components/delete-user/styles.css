@@ -1,0 +1,20 @@
+.delete-user-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 32px;
+}
+
+.remove-button {
+    width: 100px !important;
+    background-color: #c1121f !important;
+}
+
+.accept-checkbox input {
+    background-color: #c1121f;
+}
+
+.delete-wrapper {
+    margin: 0;
+    margin-bottom: 14px;
+}

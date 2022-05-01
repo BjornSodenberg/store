@@ -56,7 +56,10 @@ export const postNewUser = async (new_email: string) => {
       result = snapshot.val();
     }
   } catch (e) {
-    return e
+    return {
+      code: 500,
+      message: 'Ошибка добавления сотрудника. Обратитесь в поддержку.'
+    }
   }
 
   const userId = +Object.keys(result)[0] + 1;
@@ -67,7 +70,28 @@ export const postNewUser = async (new_email: string) => {
     diamonds: 0
   }
 
-  set(ref(database, `/users/${userId}`), newUser)
+  set(ref(database, `/users/${userId}`), newUser);
+  return {
+    code: 200,
+    message: `Сотрудник ${newUser.email} успешно добавлен.`
+  };
+}
+
+export const deleteUser = async (id: number) => {
+  const usersRef = ref(database, `/users/${id % 1000}`);
+  try {
+    await remove(usersRef);
+  } catch(e) {
+    return {
+      code: 500,
+      message: 'Ошибка при удалении сотрудника. Обратитесь в поддержку.'
+    }
+  }
+
+  return {
+    code: 200,
+    message: 'Сотрудник удален'
+  }
 }
 
 export default database;

@@ -1,0 +1,38 @@
+.new-user-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 32px;
+}
+
+.new-user-input {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.new-user-input input{
+    flex: 1;
+    height: 44px;
+    border-radius: 16px;
+    border: none;
+    background-color: #e5e5e5;
+    font-size: 16px;
+    padding-left: 24px;
+    min-width: 420px;
+    
+}
+
+.new-user-input button {
+    position: absolute;
+    right: 0px;
+    width: 132px;
+    height: 45px;
+    border: none;
+    background-color: #e76f51;
+    border-radius: 16px;
+    color: white;
+}

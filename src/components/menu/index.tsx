@@ -14,8 +14,8 @@ type Props = {
 const Menu = (props: Props) => {
     return (
         <ul className='menu'>
-            <MenuItem to="/user-wallet" icon={wallet} label="Изменить баланс" onClicked={props.clickedItem === 'wallet' ? true : false}/>
-            <MenuItem to="/add-user" icon={human} label="Добавить сотрудника" onClicked={props.clickedItem === 'add' ? true : false}/>
+            <MenuItem to="/user-wallet" icon={wallet} label="Баланс сотрудника" onClicked={props.clickedItem === 'wallet' ? true : false}/>
+            <MenuItem to="/create-new-user" icon={human} label="Добавить сотрудника" onClicked={props.clickedItem === 'add' ? true : false}/>
             <MenuItem to="/delete-user" icon={deleteUser} label="Удалить сотрудника" onClicked={props.clickedItem === 'delete' ? true : false}/>
             <MenuItem to="/transfer" icon={transfer} label="Перевод валюты" onClicked={props.clickedItem === 'transfer' ? true : false}/>
             <MenuItem to="/history" icon={history} label="История операций" onClicked={props.clickedItem === 'history' ? true : false}/>
