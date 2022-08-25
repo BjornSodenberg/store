@@ -1,0 +1,29 @@
+.mainContent {
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+}
+
+.mainContent div {
+    background-color: #302D49;
+    margin-right: 24px;
+    margin-bottom: 24px;
+}
+
+.small {
+    width: 250px;
+    height: 250px;
+}
+
+
+.medium {
+    width: 524px;
+    height: 250px;
+}
+
+.large {
+    width: 524px;
+    height: 250px;
+}
+
+

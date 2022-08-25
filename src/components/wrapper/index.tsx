@@ -1,3 +1,4 @@
+import Header from '../header';
 import Menu from '../menu';
 import './styles.css';
 
@@ -8,12 +9,16 @@ type Props = {
 
 const NavigationWrapper = (props: Props) => {
     return (
-        <div className='wrapper'>
-            <div className='left-menu'>
-                <Menu clickedItem={props.path}/> 
-            </div>
-            <div className='right-content'>
-                {props.children}
+        <div>
+            <Header />
+            <div className='wrapper'>
+                
+                <div className='left-menu'>
+                    <Menu clickedItem={props.path}/> 
+                </div>
+                <div className='right-content'>
+                    {props.children}
+                </div>
             </div>
         </div>
     )

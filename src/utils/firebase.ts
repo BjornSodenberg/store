@@ -9,7 +9,19 @@ import {
   set,
   remove
 } from "@firebase/database";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  getDocs,
+  query as firestoreQuery,
+  where,
+  orderBy,
+  limit
+} from "@firebase/firestore"
 import { User } from "../components/update-user/types";
+import timestamp from 'time-stamp';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8AXb5pmw1_bzq8IJQiPC7MT-nDk1IXzo",
@@ -23,8 +35,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+export const database = getDatabase(app);
+export const cloudDatabase = getFirestore(app);
 
+// done
 export const getUsers = async () => {
   const usersRef = ref(database, '/users');
   try {
@@ -36,7 +50,7 @@ export const getUsers = async () => {
     return e
   }
 }
-
+// done
 export const updateUser = (user: User) => {
   const updates: any = {};
   const idx = user.id % 1000;
@@ -129,6 +143,52 @@ export const transfer = async (userFrom: User, userTo: User, count: number) => {
     message: 'Перевод успешно отправлен.'
   }
 
+}
+
+export const getSizeHistory = async() => {
+  const query = collection(cloudDatabase, 'history');
+  const snapshot = await getDocs(query);
+  return snapshot.size;
+}
+
+export const getHistory = async () => {
+  const q = firestoreQuery(collection(cloudDatabase, 'history'), orderBy('created', 'desc'), limit(10));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const getHistoryByEmail = async (email: string, limitCount:number = 10) => {
+  const q = firestoreQuery(
+    collection(cloudDatabase, 'history'),
+    where("to", "==", email), 
+    orderBy('created', 'desc'),
+    limit(limitCount),
+  );
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const writeToHistory = async (
+  count: string, 
+  from: string, 
+  to: string, 
+  operation: string, 
+  type: string,
+  comment: string,
+) => {
+  try {
+    await addDoc(collection(cloudDatabase, 'history'), {
+      count: count,
+      from: from,
+      to: to,
+      operation: operation,
+      type: type,
+      comment: comment,
+      created: timestamp()
+    })
+  } catch(e) {
+    console.log(e)
+  }
 }
 
 export default database;

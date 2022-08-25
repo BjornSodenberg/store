@@ -1,14 +1,20 @@
 import NavigationWrapper from '../components/wrapper';
-import './styles.css'
+import styles from './styles.module.css';
 
 function App() {
+    // await writeToHistory('11', 'yu.ognev@zarplata.ru','e.karabantseva@zarplata.ru', 'increase', 'lemon');
     return (
-        <NavigationWrapper path="/">
-            <div className='main-content'>
-                <h1>Зарплата.store</h1>
-                <p>Выберите операцию в меню слева</p>
-            </div>
-        </NavigationWrapper>
+        <div>
+            <NavigationWrapper path="/">
+                <div className={styles.mainContent}>
+                    <div className={styles.small}></div>
+                    <div className={styles.small}></div>
+                    <div className={styles.small}></div>
+                    <div className={styles.small}></div>
+                </div>
+            </NavigationWrapper>
+        </div>
+        
     );
 }
 

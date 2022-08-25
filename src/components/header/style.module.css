@@ -1,0 +1,104 @@
+.logo {
+    width: 170px;
+}
+
+.header {
+    margin: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.userInfo {
+    display: flex;
+    padding: 16px;
+}
+
+.userData {
+    margin-left: 12px;
+}
+
+.userName {
+    color: #CECCE3;
+    margin: 0;
+    padding: 0;
+}
+
+.userStatus {
+    color: #A9A6BD;
+}
+
+.dropdown {
+    position: absolute;
+    top: 53px;
+    right: 0;
+    width: 280px;
+    background-color: #312d4b;
+    border-radius: 5px;
+    display: none;
+    box-shadow: 10px 5px 5px black;
+
+}
+
+.dropdownList {
+    padding: 16px;
+    z-index: 99;
+}
+
+.dropdownItem {
+    padding: 6px;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    transition: .5s;
+    align-items: center;
+}
+
+.dropdownItem a {
+    margin-left: 8px;
+    color: #fff;
+}
+
+.dropdownItem:hover {
+    padding: 6px;
+    background-color: #CECCE3;
+    transition: .5s;
+}
+
+.iconContainer {
+    cursor: pointer;
+    position: relative;
+    margin-right: 12px;
+}
+
+.iconCounter {
+    background-color: #EC5A58;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.iconCounter span {
+    color: #fff;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.open {
+    display: block;
+}
