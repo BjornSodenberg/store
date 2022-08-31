@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import employeeReducer from './users/reducers';
+import historyReducer from './history/reducers';
 
 export const store = configureStore({
   reducer: {
-    employees: employeeReducer
+    employees: employeeReducer,
+    history: historyReducer,
   },
 })
 

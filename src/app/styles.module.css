@@ -4,26 +4,94 @@
     text-align: center;
 }
 
-.mainContent div {
+.mainContent > div {
     background-color: #302D49;
     margin-right: 24px;
     margin-bottom: 24px;
 }
 
 .small {
-    width: 250px;
-    height: 250px;
+    width: 175px;
+    height: 175px;
 }
 
 
 .medium {
-    width: 524px;
-    height: 250px;
+    width: 414px;
+    height: 175px;
 }
 
 .large {
-    width: 524px;
-    height: 250px;
+    width: 853px;
+    height: 175px;
+}
+
+.totalCount {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    justify-content: space-between;
+}
+
+.totalWrapper {
+    color: e7e3fcad;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.totalDiamonds {
+    color: #52AEF8;
+}
+
+.totalEmployees {
+    color: #76C73B;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #CECCE3;
+    text-align: start;
+    margin-left: 20px;
+}
+
+.totalTitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #e7e3fcad;
+}
+
+.totalValue {
+    font-size: 20px;
+    font-weight: 600;
+    color: #e7e3fcde;
+}
+
+.totalContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.totalIcon {
+    
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    margin-right: 8px;
+}
+
+.lemons {
+    background-color: #F4B73F;
+}
+
+.diamonds {
+    background-color: #52AEF8;
+}
+
+.employees {
+    background-color: #76C73B;
 }
 
 
