@@ -12,16 +12,17 @@ import {
 import {
   getFirestore,
   collection,
-  onSnapshot,
   addDoc,
   getDocs,
   query as firestoreQuery,
   where,
   orderBy,
-  limit
+  limit,
 } from "@firebase/firestore"
 import { User } from "../components/update-user/types";
+import { store } from 'store';
 import timestamp from 'time-stamp';
+import { setLastVisible } from "store/history/reducers";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8AXb5pmw1_bzq8IJQiPC7MT-nDk1IXzo",
@@ -145,29 +146,6 @@ export const transfer = async (userFrom: User, userTo: User, count: number) => {
 
 }
 
-export const getSizeHistory = async() => {
-  const query = collection(cloudDatabase, 'history');
-  const snapshot = await getDocs(query);
-  return snapshot.size;
-}
-
-export const getHistory = async () => {
-  const q = firestoreQuery(collection(cloudDatabase, 'history'), orderBy('created', 'desc'), limit(10));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => doc.data());
-}
-
-export const getHistoryByEmail = async (email: string, limitCount:number = 10) => {
-  const q = firestoreQuery(
-    collection(cloudDatabase, 'history'),
-    where("to", "==", email), 
-    orderBy('created', 'desc'),
-    limit(limitCount),
-  );
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => doc.data());
-}
-
 export const writeToHistory = async (
   count: string, 
   from: string, 
@@ -188,6 +166,89 @@ export const writeToHistory = async (
     })
   } catch(e) {
     console.log(e)
+  }
+}
+
+type HistoryProps = {
+  email?: string;
+  dateStart?: string;
+  dateEnd?: string;
+  order: "desc" | "asc";
+  count: number;
+}
+
+export const getHistory = async (
+  order: "desc" | "asc" = "desc",
+  limitCount: number = 25  
+) => {
+  const q = firestoreQuery(
+    collection(cloudDatabase, 'history'),
+    orderBy('created', order),
+    limit(limitCount)
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+  console.log(lastVisible);
+  window.localStorage.setItem('lastVisible',lastVisible);
+
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const getHistoryByEmail = async (
+  email: string,
+  order: "desc" | "asc" = "desc",
+  limitCount:number = 10
+) => {
+  const q = firestoreQuery(
+    collection(cloudDatabase, 'history'),
+    where("to", "==", email), 
+    orderBy('created', order),
+    limit(limitCount),
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+  window.localStorage.setItem('lastVisible',lastVisible);
+
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const getHistoryWithRange = async (props: HistoryProps) => {
+  const {email, dateStart, dateEnd, order, count} = props;
+  if (!email && dateStart && dateEnd) {
+    const q = firestoreQuery(
+      collection(cloudDatabase, 'history'),
+      where('created', '>=', dateStart),
+      where('created', '<=', dateEnd),
+      orderBy('created', order),
+      limit(count)
+    );
+  
+    const querySnapshot = await getDocs(q);
+
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+    window.localStorage.setItem('lastVisible',lastVisible);
+
+    return querySnapshot.docs.map((doc) => doc.data());
+  } else if (email && dateStart && dateEnd) {
+    const q = firestoreQuery(
+      collection(cloudDatabase, 'history'),
+      where("to", "==", email),
+      where('created', '>=', dateStart),
+      where('created', '<=', dateEnd),
+      orderBy('created', order),
+      limit(count)
+    );
+  
+    const querySnapshot = await getDocs(q);
+
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+    window.localStorage.setItem('lastVisible',lastVisible);
+
+    return querySnapshot.docs.map((doc) => doc.data());
   }
 }
 

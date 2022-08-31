@@ -41,7 +41,7 @@ const EditUserForm = (props: Props) => {
     useEffect(() => {
         async function history () {
             setLoading(true);
-            const result = await getHistoryByEmail(user.email, 3);
+            const result = await getHistoryByEmail(user.email, "desc", 3);
             setHistory(result);
             setLoading(false);
         }

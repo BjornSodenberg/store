@@ -25,12 +25,6 @@ const Menu = (props: Props) => {
                     onClicked={props.clickedItem === '/' ? true : false}
                 />
                 <MenuItem
-                    to="/notifications"
-                    icon={NotificationsIcon}
-                    label="Уведомления (99)"
-                    onClicked={props.clickedItem === 'notifications' ? true : false}
-                />
-                <MenuItem
                     to="/user-wallet"
                     icon={ReceiptIcon}
                     label="Транзакции (99)"

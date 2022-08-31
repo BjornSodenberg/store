@@ -29,12 +29,6 @@ const Header  = () => {
                         <span>99</span>
                     </div>
                 </div>
-                <div className={style.iconContainer}>
-                    <NotificationsIcon sx={{fontSize: 32, color: '#fff'}}/>
-                    <div className={style.iconCounter}>
-                        <span>99</span>
-                    </div>
-                </div>
                 <Avatar toggleOpen={toggleOpen}/>
                 <div className={`${style.dropdown} ${isOpen ? style.open : ''}`}>
                     <div className={style.userInfo}>
