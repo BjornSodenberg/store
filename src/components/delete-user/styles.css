@@ -1,20 +1,40 @@
 .delete-user-wrapper {
     display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin: 32px;
+    background-color: #302D49;
+    border-radius: 6px;
 }
 
 .remove-button {
-    width: 100px !important;
-    background-color: #c1121f !important;
+    height: 44px;
+    padding: 0 16px;
+    background-color: #F4B73F;
 }
 
-.accept-checkbox input {
-    background-color: #c1121f;
+.accept-checkbox {
+    color: #CECCE3;
 }
 
 .delete-wrapper {
+    display: flex;
+}
+
+.delete-user__form {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-user__form h1 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #CECCE3;
+}
+
+.delete-user__description {
+    color: #A9A6BD;
     margin: 0;
-    margin-bottom: 14px;
+    font-size: 12px;
+    max-width: 700px;
+
+    margin-bottom: 20px;
 }

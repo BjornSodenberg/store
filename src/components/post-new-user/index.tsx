@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { UiInput } from "uikit/UiInput";
 
 import { postNewUser } from '../../utils/firebase';
 import { isEmail } from "../../utils/is-email";
 import NavigationWrapper from "../wrapper";
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 import './styles.css'
+import { Link } from "react-router-dom";
 
 type Response = {
     code: number;
@@ -29,40 +33,52 @@ const PostForm = () => {
             const result = await postNewUser(value);
             setLoading(false);
             setStatus(result);
-            setValue('');
         }
     }
     
     return (
         <NavigationWrapper path="add">
             <div className="new-user-wrapper">
-                <h1>Новый сотрудник</h1>
                 <div className="new-user-input">
-                    <input 
-                        type="email" 
-                        onChange={(e) => setValue(e.target.value)}
-                        className="new-user-input"
-                        value={value}
-                        placeholder="steve@jobs.com"
-                    />
-                    <button 
-                        type="button" 
-                        onClick={onSubmit}
-                        className="new-user-submit"
-                        disabled={loading}
-                    >
-                        Записать
-                    </button>
-                </div>
-                {
-                    status && (
-                        status.code === 200 ? (
-                            <p className="positive">{status.message}</p>
-                        ) : (
-                            <p className="negative">{status.message}</p>
+                    <h1>Новый сотрудник</h1>
+                    <div className="new-user__form">
+                        <UiInput 
+                            icon={<PersonIcon />}
+                            onChange={setValue}
+                            value={value}
+                            placeholder="steve@jobs.com"
+                            type="email"
+                        />
+                        <button 
+                            type="button" 
+                            onClick={onSubmit}
+                            className="new-user-submit"
+                            disabled={loading}
+                        >
+                            Записать
+                        </button>
+                    </div>
+                    
+                    {
+                        status && (
+                            status.code === 200 ? (
+                                <p className="positive">
+                                    Сотрудник {' '} 
+                                    <Link 
+                                        to={`/user-wallet/?email=${value}`}
+                                        className="new-user__user-email"
+                                    >
+                                        {value}
+                                    </Link>  {' '}
+                                    успешно добавлен.
+                                </p>
+                            ) : (
+                                <p className="negative">{status.message}</p>
+                            )
                         )
-                    )
-                }
+                    }
+                </div>
+                
             </div>
         </NavigationWrapper>
     )

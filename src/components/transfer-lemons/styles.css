@@ -1,27 +1,42 @@
 .transfer-wrapper {
-    margin: 32px;
     display: flex;
-    flex-direction: column;
+    background-color: #302D49;
+    border-radius: 8px;
+}
+
+.transfer__content {
+    margin: 20px;
+}
+
+.transfer__content h1 {
+    color: #CECCE3;
 }
 
 .transfer-from, .transfer-to, .transfer-sum {
     display: flex;
-    flex-direction: row;
-    margin-bottom: 12px;
+    flex-direction: column;
 }
 
 .transfer-form {
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-transfer-info {
-    position: absolute;
-    right: 70px;
+    height: 44px;
+}
+
+.transfer-from__info {
+    display: flex;
+    color: #F4B73F;
+    align-items: flex-end;
 }
 
 .label{
-    font-weight: bold;
-    width: 100px
+    color: #CECCE3;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 6px;
 }
 
 .transfer-input {
@@ -35,16 +50,15 @@
 
 .lemons-count {
     font-weight: bold;
+    margin: 0;
 }
 
 .submit-transfer {
     margin-top: 24px;
     height: 44px;
     width: 244px;
-    float: right;
     border: none;
-    background-color: #2a9d8f;
-    color: white;
+    background-color: #F4B73F;
     font-size: 18px;
     border-radius: 12px;
 }
