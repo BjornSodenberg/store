@@ -1,71 +1,38 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import NavigationWrapper from '../components/wrapper';
-import { LemonIcom, DiamondIcon } from 'uikit/icons';
-import PersonIcon from '@mui/icons-material/Person';
-import { fetchEmployess } from 'store/users/reducers';
-import styles from './styles.module.css';
-import cn from 'classnames';
-import { useEffect } from 'react';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import Main from 'pages/main';
+import UpdateUserForm from 'components/update-user';
+import PostForm from 'components/post-new-user';
+import DeleteUser from 'components/delete-user';
+import TransferPage from 'components/transfer-lemons';
+import {History} from 'components/history';
+import { Login } from 'components/login-page';
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import './styles.css';
+import { useCookies } from "react-cookie";
 
 function App() {
-    const {totalLemons, totalDiamonds, totalEmployees} = useSelector((state: RootState) => state.employees);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchEmployess());
-    }, []);
+    const isLogin = useSelector((state: RootState) => state.admin.isLogin);
+    const [cookies] = useCookies(['auth-token']);
+
     return (
-        <div>
-            <NavigationWrapper path="/">
-                <div className={styles.mainContent}>
-                    <div className={styles.medium}>
-                        <h3 className={styles.title}>Карточка статистики</h3>
-                        <div className={styles.totalCount}>
-                            <div className={styles.totalWrapper}>
-                                <span className={cn(
-                                        styles.totalIcon,
-                                        styles.lemons
-                                    )}><LemonIcom /></span>
-                                <div className={styles.totalContainer}>
-                                    <span className={cn(
-                                        styles.totalTitle,
-                                    )}>Лимоны</span>
-                                    <span className={styles.totalValue}>{totalLemons}</span>
-                                </div>
-                            </div>
-                            <div className={styles.totalWrapper}>
-                                <span className={cn(
-                                        styles.totalIcon,
-                                        styles.diamonds
-                                    )}><DiamondIcon /></span>
-                                <div className={styles.totalContainer}>
-                                    <span className={styles.totalTitle}>Алмазы</span>
-                                    <span className={styles.totalValue}>{totalDiamonds}</span>
-                                </div>
-                            </div>
-                            <div className={styles.totalWrapper}>
-                                <span className={cn(
-                                        styles.totalIcon,
-                                        styles.employees
-                                    )}><PersonIcon/></span>
-                                <div className={styles.totalContainer}>
-                                    <span className={styles.totalTitle}>Сотрудники</span>
-                                    <span className={styles.totalValue}>{totalEmployees}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div className={styles.small}>
-                        
-                    </div>
-                    <div className={styles.small}></div>
-                    <div className={styles.small}></div>
-                </div>
-            </NavigationWrapper>
-        </div>
-        
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={
+                    isLogin || cookies["auth-token"] ? <Main /> : <Login />
+                } />
+                <Route path="user-wallet" element={<UpdateUserForm />} />
+                <Route path="create-new-user" element={<PostForm />} />
+                <Route path="delete-user" element={<DeleteUser />} />
+                <Route path="transfer" element={<TransferPage />} />
+                <Route path="history" element={<History />} />
+                <Route path="login" element={<Login />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 

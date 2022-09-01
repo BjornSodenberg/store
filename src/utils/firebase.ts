@@ -22,7 +22,6 @@ import {
 import { User } from "../components/update-user/types";
 import { store } from 'store';
 import timestamp from 'time-stamp';
-import { setLastVisible } from "store/history/reducers";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8AXb5pmw1_bzq8IJQiPC7MT-nDk1IXzo",
@@ -35,7 +34,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app);
 export const cloudDatabase = getFirestore(app);
 
@@ -209,7 +208,10 @@ export const getHistoryByEmail = async (
   );
 
   const querySnapshot = await getDocs(q);
-
+  console.log(querySnapshot.docs);
+  if (!querySnapshot.docs.length) {
+    throw new Error("Записи об этом юзере отстутствуют");
+  }
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
   window.localStorage.setItem('lastVisible',lastVisible);
 
