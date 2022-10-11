@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 import './styles.css';
 import { useCookies } from "react-cookie";
+import { TransactionsPage } from "pages/transactions";
 
 function App() {
     const isLogin = useSelector((state: RootState) => state.admin.isLogin);
@@ -31,6 +32,7 @@ function App() {
                 <Route path="transfer" element={<TransferPage />} />
                 <Route path="history" element={<History />} />
                 <Route path="login" element={<Login />} />
+                <Route path="transactions" element={<TransactionsPage />} />
             </Routes>
         </BrowserRouter>
     );

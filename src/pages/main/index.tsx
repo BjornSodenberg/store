@@ -11,6 +11,8 @@ import { useEffect } from 'react';
 function Main() {
     const {totalLemons, totalDiamonds, totalEmployees} = useSelector((state: RootState) => state.employees);
     const dispatch = useDispatch();
+    
+
     useEffect(() => {
         // @ts-ignore
         dispatch(fetchEmployess());

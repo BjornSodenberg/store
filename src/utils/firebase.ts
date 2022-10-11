@@ -20,7 +20,6 @@ import {
   limit,
 } from "@firebase/firestore"
 import { User } from "../components/update-user/types";
-import { store } from 'store';
 import timestamp from 'time-stamp';
 
 const firebaseConfig = {
@@ -91,10 +90,11 @@ export const postNewUser = async (new_email: string) => {
   };
 }
 
-export const deleteUser = async (id: number) => {
+export const deleteUser = (id: number) => {
   const usersRef = ref(database, `/users/${id % 1000}`);
+
   try {
-    await remove(usersRef);
+    remove(usersRef);
   } catch(e) {
     return {
       code: 500,

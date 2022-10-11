@@ -4,17 +4,37 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import HistoryIcon from '@mui/icons-material/History';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+
+import { getDocs , collection, query, where } from '@firebase/firestore';
+import { cloudDatabase } from 'utils/firebase';
 
 import MenuItem from './menu-item';
 import './styles.css'
+import { useEffect, useState } from 'react';
 
 type Props = {
     clickedItem?: string;
 }
 
 const Menu = (props: Props) => {
+    const [countTransactions, setCountTransactions] = useState(0);
+
+    useEffect(() => {
+        async function getCountTransactions () {
+            const transactionsRef = collection(cloudDatabase, "transactions")
+            const q = query(transactionsRef, where("id", ">", "0"));
+            const querySnapshot = await getDocs(q);
+            setCountTransactions(querySnapshot.size); 
+        }
+
+        getCountTransactions();
+    }, []);
+
+    const getTransactionsCount = () => {
+        return countTransactions > 0 ? `(${countTransactions})` : ''
+    }
+
     return (
         <div>
             <ul className='menu'>
@@ -25,9 +45,9 @@ const Menu = (props: Props) => {
                     onClicked={props.clickedItem === '/' ? true : false}
                 />
                 <MenuItem
-                    to="/user-wallet"
+                    to="/transactions"
                     icon={ReceiptIcon}
-                    label="Транзакции (99)"
+                    label={`Транзакции ${getTransactionsCount()}`}
                     onClicked={props.clickedItem === 'transactions' ? true : false}
                 />
             </ul>
