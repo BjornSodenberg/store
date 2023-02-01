@@ -40,13 +40,14 @@ const employeesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchEmployess.fulfilled, (state, action:PayloadAction<User[]>) => {
-                employeesAdapter.setAll(state, action.payload);
+                const employees = Object.keys(action.payload).map((key: any) => action.payload[key]);
+                employeesAdapter.setAll(state, employees.filter(item => !item.status));
 
                 state.totalDiamonds = 0;
                 state.totalEmployees = 0;
                 state.totalLemons = 0;
 
-                action.payload.forEach(item => {
+                employees.filter(item => !item.status).forEach(item => {
                     state.totalLemons += item.lemons;
                     state.totalDiamonds += item.diamonds;
                     state.totalEmployees += 1;

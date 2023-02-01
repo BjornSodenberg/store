@@ -17,8 +17,12 @@ import { updateEmployer } from 'store/users/reducers';
 import { User } from '../types';
 
 import './styles.css'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { AnalyticsSender } from 'utils/analytics';
+import { RootState } from 'store';
+
+import { generateEmail } from 'utils/generateEmail';
 
 type Props = {
     user: User;
@@ -27,6 +31,7 @@ type Props = {
 
 const EditUserForm = (props: Props) => {
     const { user } = props;
+    const analyticsSender = new AnalyticsSender();
 
     const dispatch = useDispatch();
     const [lemons, setLemons] = useState<string>('');
@@ -37,6 +42,7 @@ const EditUserForm = (props: Props) => {
     const [historyData, setHistory] = useState<any>();
     const [isLoading, setLoading] = useState<boolean>();
     const [sendEmail, setSendEmail] = useState<boolean>(false);
+    const admin = useSelector((state: RootState) => state.admin);
 
     useEffect(() => {
         async function history () {
@@ -81,18 +87,24 @@ const EditUserForm = (props: Props) => {
             props.updateUser(upd);
             writeToHistory(
                 lemons,
-                'e.karabantseva@zarplata.ru',
+                admin.email,
                 user.email,
                 parseInt(lemons) > 0 ? 'increase' : 'decrease',
                 'lemons',
                 comment
             );
+            if (parseInt(lemons) > 0){
+                analyticsSender.sendAccrualLenons(parseInt(lemons))
+            } else {
+                analyticsSender.sendSpendingLemons(parseInt(lemons))
+            }
+
+            if (sendEmail) {
+                sendNotification();
+            }
+
             setError('');
             setLemons('');
-        }
-
-        if (sendEmail) {
-            sendNotification();
         }
     }
 
@@ -112,23 +124,33 @@ const EditUserForm = (props: Props) => {
             props.updateUser(upd);
             writeToHistory(
                 diamonds,
-                'e.karabantseva@zarplata.ru',
+                admin.email,
                 user.email,
                 parseInt(lemons) > 0 ? 'increase' : 'decrease',
                 'diamonds',
                 comment
             );
+            if (parseInt(diamonds) > 0) {
+                analyticsSender.sendAccrualDiamons(parseInt(diamonds));
+            } else {
+                analyticsSender.sendSpendingDiamons(parseInt(diamonds));
+            }
+
+            if (sendEmail) {
+                sendNotification();
+            }
+
             setError('');
             setDiamonds('');
-        }
-
-        if (sendEmail) {
-            sendNotification();
         }
     }
 
     const sendNotification = () => {
-        const mailto = `mailto:${user.email}?subject=Testing out mailto!&body=${comment}`;
+        const subject = 'Магазин мерча зарплаты.ру';
+        const body = `Мы начислили тебе ${lemons} лимончиков ${comment}.%0D%0AВпервые слышишь про лимончики? Тогда сначала регистрируйся в store.zarplata.ru, а потом оформляй заказ`
+        const mailto = `
+            mailto:${user.email}?subject=${subject}&body=${body}
+        `;
         window.location.href = mailto;
     }
 

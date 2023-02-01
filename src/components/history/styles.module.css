@@ -112,6 +112,18 @@
     border-radius: 6px;
 }
 
+.history-header__close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #A9A6BD;
+    cursor: pointer;
+}
+
+.history-header__datepicker {
+    position: relative;
+}
+
 .history-list {
     display: flex;
     flex-direction: column;

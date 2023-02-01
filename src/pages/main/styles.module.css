@@ -4,6 +4,11 @@
     text-align: center;
 }
 
+#d3demo {
+    width: 100px;
+    height: 100px;
+}
+
 .mainContent > div {
     background-color: #302D49;
     margin-right: 24px;
@@ -18,7 +23,7 @@
 
 .medium {
     width: 414px;
-    height: 175px;
+    height: 250px;
 }
 
 .large {

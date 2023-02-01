@@ -25,7 +25,7 @@ export const UiDatePicker = (props: Props) => {
             props.setDateRange(update);
           }}
           withPortal
-          placeholderText="Нажмите, чтобы выбрать дату"
+          placeholderText="Выберите дату"
         />
     </div>
     );

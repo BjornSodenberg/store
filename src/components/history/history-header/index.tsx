@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { UiDatePicker } from 'components/date-picker';
 import { UiInput } from "uikit/UiInput";
 import HistoryIcon from '@mui/icons-material/History';
+import CloseIcon from '@mui/icons-material/Close';
 
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -53,20 +54,30 @@ export const HistoryHeader = (props: Props) => {
                 История операций
             </h1>
             
-            <form onSubmit={onSubmit} className={styles['history-header__tools-form']}> 
-                <UiDatePicker 
-                    setDateRange={setDateRange}
-                    startDate={startDate}
-                    endDate={endDate}
-                />     
-                <UiInput
-                    icon={<PersonIcon />}
-                    type="text"
-                    list="suggestions"
-                    placeholder="steve@jobs.ru"
-                    onChange={props.setUserEmail}
-                    value={props.userEmail}
-                />
+            <form onSubmit={onSubmit} className={styles['history-header__tools-form']}>
+                <div className={styles['history-header__datepicker']}>
+                    <UiDatePicker 
+                        setDateRange={setDateRange}
+                        startDate={startDate}
+                        endDate={endDate}
+                    />
+                    <div onClick={() => setDateRange([null, null])}>
+                        <CloseIcon  className={styles['history-header__close']}/>    
+                    </div>
+                </div>
+                <div className={styles['history-header__datepicker']}>
+                    <UiInput
+                        icon={<PersonIcon />}
+                        type="text"
+                        list="suggestions"
+                        placeholder="steve@jobs.ru"
+                        onChange={props.setUserEmail}
+                        value={props.userEmail}
+                    />
+                    <div onClick={() => props.setUserEmail("")}>
+                        <CloseIcon  className={styles['history-header__close']}/>    
+                    </div>
+                </div>
                 <datalist id="suggestions">
                     {
                         employees.entities && Array.prototype.map.call(Object.values(employees.entities), (item => (

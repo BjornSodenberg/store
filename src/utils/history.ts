@@ -100,7 +100,6 @@ export class HistoryService {
         email: string,
         order: "desc" | "asc" = "desc",
     ) => {
-        console.log('enter here');
         const firestoreQuery = this.createFirestoreQuery({
             email,
             order,
@@ -167,7 +166,6 @@ export class HistoryService {
         const qs = this.createFirestoreQuery({...filters}, lastVisible);
         
         const result = await getDocs(qs);
-        console.log(result.docs.map((doc) => doc.data()));
 
         return {
             data: result.docs.map((doc) => doc.data()),
