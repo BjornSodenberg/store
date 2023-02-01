@@ -1,73 +1,95 @@
 import { useEffect, useState } from 'react';
-import { DataSnapshot } from "@firebase/database-types";
-import { User } from './types'
-import { getUsers } from '../../utils/firebase';
+
+import qs from 'query-string';
+
 import EditUserForm from './edit-user';
 import NavigationWrapper from '../wrapper';
-import search from '../../assets/search.svg';
+
+import EmailIcon from '@mui/icons-material/Email';
+
+import { User } from './types'
 
 import './styles.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchEmployess } from 'store/users/reducers';
+import { RootState } from 'store';
 
 const UpdateUserForm = () => {
-    const [data, setData] = useState<DataSnapshot>();
+    const queryString = qs.parse(window.location.search)?.['email']?.toString();
+    const dispatch = useDispatch();
+    const employees = useSelector((state: RootState) => state.employees)
+
     const [user, setUser] = useState<User>();
-    const [value, setValue] = useState<string>();
+    const [value, setValue] = useState<string>(queryString || '');
+    const [isFocus, setFocus] = useState<boolean>();
 
     useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const result = await getUsers();
-                setData(result);
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        fetchUsers();
+        // @ts-ignore
+        dispatch(fetchEmployess());
     }, []);
+
+    useEffect(() => {
+        if (queryString && value) {
+            const user = Array.prototype.find.call(
+                Object.values(employees.entities), 
+                (item: User) => item.email === value
+            );
+    
+            user && setUser(user);
+        } 
+    }, [queryString, employees, value])
 
     const onClick = (event: any) => {
         event.preventDefault();
         const user = Array.prototype.find.call(
-            data, 
+            Object.values(employees.entities), 
             (item: User) => item.email === value
         );
-
+        window.history.pushState({}, '', `?email=${user.email}`)
         user && setUser(user);
     }
 
-    const updateUserInfo = async () => {
-        try {
-            const result = await getUsers();
-            setData(result);
-        } catch (e) {
-            console.log(e);
-        }
+    const updateUserInfo = (upd: User) => {
+        setUser(upd);
     }
     
     return (
         <NavigationWrapper path="wallet">
-            <div className='main-content'>
-                <h1>Поиск сотрудника</h1>
+            <div className='main-content update-user'>
+                <h2 className='updateUserHeader'>Поиск сотрудника</h2>
                 <form onSubmit={onClick} className='search-wrapper'>
-                    <button type='submit' className="button"><img src={search} alt="search"></img></button>
+                    <EmailIcon className={isFocus ? 'search-icon active-text': 'search-icon'}/>
                     <input
                         type="text"
                         list="suggestions"
-                        className='search'
+                        className={isFocus ? 'search search-active': 'search'}
                         placeholder='steve@jobs.com'
-                        
+                        value={value}
+                        onFocus={() => setFocus(true)}
+                        onBlur={() => { value ? setFocus(true) : setFocus(false)}}
                         onChange={(e) => setValue(e.target.value)}
                     />
                     <datalist id="suggestions">
                         {
-                            data && Array.prototype.map.call(data, (item => (
+                            employees.entities && Array.prototype.map.call(Object.values(employees.entities), (item => (
                                 <option value={item.email} key={item.id}/>
                             )))
                         }
                     </datalist>
+                    <button type='submit' className={isFocus ? 'button active': 'button'}>
+                        <span className='buttonSearchText'>Найти</span>
+                    </button>
                 </form>
+            </div>
+            <div className='edit-container'>
                 {
-                    value && user && <EditUserForm user={user} key={user.id} updateUser={updateUserInfo}/>
+                    value && 
+                    user && 
+                    <EditUserForm 
+                        user={user} 
+                        key={user.id} 
+                        updateUser={updateUserInfo}
+                    />
                 }
             </div>
         </NavigationWrapper>

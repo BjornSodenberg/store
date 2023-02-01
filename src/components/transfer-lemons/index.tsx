@@ -2,8 +2,11 @@ import NavigationWrapper from "../wrapper";
 import { useEffect, useState } from 'react';
 import { DataSnapshot } from "@firebase/database-types";
 import { getUsers, transfer } from '../../utils/firebase';
+import PersonIcon from '@mui/icons-material/Person';
 
 import './styles.css';
+import { UiInput } from "uikit/UiInput";
+import { LemonIcom } from "uikit/icons";
 
 type User = {
     id: number;
@@ -63,76 +66,81 @@ const TransferPage = () => {
     return (
         <NavigationWrapper path="transfer">
             <div className="transfer-wrapper">
-                <h1>Лимонный поток</h1>
-                <form onSubmit={onSubmit}>
-                    <div className="transfer-from">
-                        <p className="label">От кого:</p>
-                        <input 
-                            type="text" 
-                            list="suggestions"
-                            placeholder="steve@jobs.com"
-                            value={from}
-                            className="transfer-input"
-                            onChange={(e) => setFrom(e.target.value)}
-                        />
-                        <div className="user-transfer-info">
-                            {
-                                userFrom && (
-                                    <p className="lemons-count">{userFrom.lemons} лимонов</p>
-                                )
-                            }
+                <div className="transfer__content">
+                    <h1>Лимонный поток</h1>
+                    <form onSubmit={onSubmit}>
+                        <div className="transfer-from">
+                            <p className="label">От кого:</p>
+                            <div className="transfer-from__info">
+                                <UiInput 
+                                    type="text" 
+                                    list="suggestions"
+                                    placeholder="steve@jobs.com"
+                                    value={from}
+                                    onChange={setFrom}
+                                    icon={<PersonIcon />}
+                                />
+                                <div className="user-transfer-info">
+                                    {
+                                        userFrom && (
+                                            <p className="lemons-count">В кошельке {userFrom.lemons} лимонов</p>
+                                        )
+                                    }
+                                </div>
+                                <datalist id="suggestions">
+                                    {
+                                        data && Array.prototype.map.call(data, (item => (
+                                            <option value={item.email} key={item.id}/>
+                                        )))
+                                    }
+                                </datalist>
+                            </div>
+                            
                         </div>
-                        <datalist id="suggestions">
-                            {
-                                data && Array.prototype.map.call(data, (item => (
-                                    <option value={item.email} key={item.id}/>
-                                )))
-                            }
-                        </datalist>
-                    </div>
 
-                    <div className="transfer-to">
-                        <p className="label">Кому:</p>
-                        <input 
-                            type="text" 
-                            list="suggestions"
-                            className="transfer-input"
-                            placeholder="steve@wozniak.com"
-                            value={to}
-                            onChange={(e) => setTo(e.target.value)}
-                        />
-                        <datalist id="suggestions">
-                            {
-                                data && Array.prototype.map.call(data, (item => (
-                                    <option value={item.email} key={item.id}/>
-                                )))
-                            }
-                        </datalist>
-                    </div>
+                        <div className="transfer-to">
+                            <p className="label">Кому:</p>
+                            <UiInput 
+                                type="text" 
+                                list="suggestions"
+                                placeholder="steve@wozniak.com"
+                                value={to}
+                                onChange={setTo}
+                                icon={<PersonIcon />}
+                            />
+                            <datalist id="suggestions">
+                                {
+                                    data && Array.prototype.map.call(data, (item => (
+                                        <option value={item.email} key={item.id}/>
+                                    )))
+                                }
+                            </datalist>
+                        </div>
 
-                    <div className="transfer-sum">
+                        <div className="transfer-sum">
                             <p className="label sum">Сумма перевода:</p>
-                            <input
+                            <UiInput 
                                 type="number"
                                 placeholder="100"
                                 value={value}
-                                className="transfer-input"
-                                onChange={(e) => setValue(e.target.value)}
+                                onChange={setValue}
+                                icon={<LemonIcom />}
                             />
                         </div>
-                    
-                    <button 
-                        type="submit"
-                        className="submit-transfer"
-                    >
-                        Перевести
-                    </button>
-                </form>
-                {
-                    status && (
-                        <p className={status.code === 200 ? 'positive status' : 'negative status'}>{status.message}</p>
-                    )
-                }
+                        
+                        <button 
+                            type="submit"
+                            className="submit-transfer"
+                        >
+                            Перевести
+                        </button>
+                    </form>
+                    {
+                        status && (
+                            <p className={status.code === 200 ? 'positive status' : 'negative status'}>{status.message}</p>
+                        )
+                    }
+                </div>
             </div>
         </NavigationWrapper>
     );

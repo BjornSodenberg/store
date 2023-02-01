@@ -9,7 +9,18 @@ import {
   set,
   remove
 } from "@firebase/database";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query as firestoreQuery,
+  where,
+  orderBy,
+  limit,
+} from "@firebase/firestore"
 import { User } from "../components/update-user/types";
+import timestamp from 'time-stamp';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8AXb5pmw1_bzq8IJQiPC7MT-nDk1IXzo",
@@ -22,9 +33,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+export const app = initializeApp(firebaseConfig);
+export const database = getDatabase(app);
+export const cloudDatabase = getFirestore(app);
 
+// done
 export const getUsers = async () => {
   const usersRef = ref(database, '/users');
   try {
@@ -36,7 +49,7 @@ export const getUsers = async () => {
     return e
   }
 }
-
+// done
 export const updateUser = (user: User) => {
   const updates: any = {};
   const idx = user.id % 1000;
@@ -77,10 +90,14 @@ export const postNewUser = async (new_email: string) => {
   };
 }
 
-export const deleteUser = async (id: number) => {
-  const usersRef = ref(database, `/users/${id % 1000}`);
+export const deleteUser = (user: User) => {
   try {
-    await remove(usersRef);
+    updateUser({
+      ...user,
+      lemons: 0,
+      diamonds: 0,
+      status: 'inactive'
+    });
   } catch(e) {
     return {
       code: 500,
@@ -129,6 +146,113 @@ export const transfer = async (userFrom: User, userTo: User, count: number) => {
     message: 'Перевод успешно отправлен.'
   }
 
+}
+
+export const writeToHistory = async (
+  count: string, 
+  from: string, 
+  to: string, 
+  operation: string, 
+  type: string,
+  comment: string,
+) => {
+  try {
+    await addDoc(collection(cloudDatabase, 'history'), {
+      count: count,
+      from: from,
+      to: to,
+      operation: operation,
+      type: type,
+      comment: comment,
+      created: timestamp()
+    })
+  } catch(e) {
+    console.log(e)
+  }
+}
+
+type HistoryProps = {
+  email?: string;
+  dateStart?: string;
+  dateEnd?: string;
+  order: "desc" | "asc";
+  count: number;
+}
+
+export const getHistory = async (
+  order: "desc" | "asc" = "desc",
+  limitCount: number = 25  
+) => {
+  const q = firestoreQuery(
+    collection(cloudDatabase, 'history'),
+    orderBy('created', order),
+    limit(limitCount)
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+  window.localStorage.setItem('lastVisible',lastVisible);
+
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const getHistoryByEmail = async (
+  email: string,
+  order: "desc" | "asc" = "desc",
+  limitCount:number = 10
+) => {
+  const q = firestoreQuery(
+    collection(cloudDatabase, 'history'),
+    where("to", "==", email), 
+    orderBy('created', order),
+    limit(limitCount),
+  );
+
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.docs.length) {
+    throw new Error("Записи об этом юзере отстутствуют");
+  }
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+  window.localStorage.setItem('lastVisible',lastVisible);
+
+  return querySnapshot.docs.map((doc) => doc.data());
+}
+
+export const getHistoryWithRange = async (props: HistoryProps) => {
+  const {email, dateStart, dateEnd, order, count} = props;
+  if (!email && dateStart && dateEnd) {
+    const q = firestoreQuery(
+      collection(cloudDatabase, 'history'),
+      where('created', '>=', dateStart),
+      where('created', '<=', dateEnd),
+      orderBy('created', order),
+      limit(count)
+    );
+  
+    const querySnapshot = await getDocs(q);
+
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+    window.localStorage.setItem('lastVisible',lastVisible);
+
+    return querySnapshot.docs.map((doc) => doc.data());
+  } else if (email && dateStart && dateEnd) {
+    const q = firestoreQuery(
+      collection(cloudDatabase, 'history'),
+      where("to", "==", email),
+      where('created', '>=', dateStart),
+      where('created', '<=', dateEnd),
+      orderBy('created', order),
+      limit(count)
+    );
+  
+    const querySnapshot = await getDocs(q);
+
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
+    window.localStorage.setItem('lastVisible',lastVisible);
+
+    return querySnapshot.docs.map((doc) => doc.data());
+  }
 }
 
 export default database;

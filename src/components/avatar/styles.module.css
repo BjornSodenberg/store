@@ -1,0 +1,21 @@
+.accountIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 99px;
+    cursor: pointer;
+}
+
+.online {
+    background-color: #76C73B;
+    width: 14px;
+    height: 14px;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.avatarContainer {
+    width: fit-content;
+    position: relative;
+}

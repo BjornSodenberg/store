@@ -1,5 +1,20 @@
 .menu {
-    margin-top: 32px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-right: 24px;
+    margin-bottom: 32px;
+}
+
+.store-tools {
+    border-bottom: 1px solid rgba(231, 227, 252, 0.14);
+    width: 276px;
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.store-tools__text {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background-color: #27233A;
+    padding: 0 8px;
+    color: #A9A6BD;
 }

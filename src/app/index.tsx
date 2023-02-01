@@ -1,14 +1,40 @@
-import NavigationWrapper from '../components/wrapper';
-import './styles.css'
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import Main from 'pages/main';
+import UpdateUserForm from 'components/update-user';
+import PostForm from 'components/post-new-user';
+import DeleteUser from 'components/delete-user';
+import TransferPage from 'components/transfer-lemons';
+import {History} from 'components/history';
+import { Login } from 'components/login-page';
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import './styles.css';
+import { useCookies } from "react-cookie";
+import { TransactionsPage } from "pages/transactions";
 
 function App() {
+    const isLogin = useSelector((state: RootState) => state.admin.isLogin);
+    const [cookies] = useCookies(['auth-token']);
+
     return (
-        <NavigationWrapper path="/">
-            <div className='main-content'>
-                <h1>Зарплата.store</h1>
-                <p>Выберите операцию в меню слева</p>
-            </div>
-        </NavigationWrapper>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={
+                    isLogin || cookies["auth-token"] ? <Main /> : <Login />
+                } />
+                <Route path="user-wallet" element={<UpdateUserForm />} />
+                <Route path="create-new-user" element={<PostForm />} />
+                <Route path="delete-user" element={<DeleteUser />} />
+                <Route path="transfer" element={<TransferPage />} />
+                <Route path="history" element={<History />} />
+                <Route path="login" element={<Login />} />
+                <Route path="transactions" element={<TransactionsPage />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 
