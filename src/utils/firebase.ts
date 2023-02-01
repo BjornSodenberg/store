@@ -90,11 +90,14 @@ export const postNewUser = async (new_email: string) => {
   };
 }
 
-export const deleteUser = (id: number) => {
-  const usersRef = ref(database, `/users/${id % 1000}`);
-
+export const deleteUser = (user: User) => {
   try {
-    remove(usersRef);
+    updateUser({
+      ...user,
+      lemons: 0,
+      diamonds: 0,
+      status: 'inactive'
+    });
   } catch(e) {
     return {
       code: 500,
@@ -189,7 +192,6 @@ export const getHistory = async (
   const querySnapshot = await getDocs(q);
 
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1].id;
-  console.log(lastVisible);
   window.localStorage.setItem('lastVisible',lastVisible);
 
   return querySnapshot.docs.map((doc) => doc.data());
@@ -208,7 +210,6 @@ export const getHistoryByEmail = async (
   );
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot.docs);
   if (!querySnapshot.docs.length) {
     throw new Error("Записи об этом юзере отстутствуют");
   }

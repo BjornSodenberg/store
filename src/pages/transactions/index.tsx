@@ -40,7 +40,6 @@ export const TransactionsPage = () => {
             let response;
             try {
                 response = await transactionService.getTransactions();
-                console.log(response);
                 let docs:Transaction[] = [];
                 response.forEach(doc => {
                     docs.push({id: doc.id, doc: doc.data() as Doc});
@@ -74,7 +73,8 @@ export const TransactionsPage = () => {
             "Подтверждение транзакции"
         );
         
-        analyticsSender.sendSpendingLemons(orderAmount)
+        analyticsSender.sendSpendingLemons(orderAmount);
+        analyticsSender.sendAcceptTransaction();
 
         transactionService.changeStatusTransaction(transactionId);
         setUpdate(true);
@@ -84,6 +84,7 @@ export const TransactionsPage = () => {
         console.log('rejected transaction');
         setUpdate(true);
         transactionService.changeStatusTransaction(id);
+        analyticsSender.sendRejectTransaction();
     }
 
     const getUser = (email:string): User => {

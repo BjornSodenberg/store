@@ -22,6 +22,8 @@ import { Link } from 'react-router-dom';
 import { AnalyticsSender } from 'utils/analytics';
 import { RootState } from 'store';
 
+import { generateEmail } from 'utils/generateEmail';
+
 type Props = {
     user: User;
     updateUser: (upd: User) => void;
@@ -96,12 +98,13 @@ const EditUserForm = (props: Props) => {
             } else {
                 analyticsSender.sendSpendingLemons(parseInt(lemons))
             }
+
+            if (sendEmail) {
+                sendNotification();
+            }
+
             setError('');
             setLemons('');
-        }
-
-        if (sendEmail) {
-            sendNotification();
         }
     }
 
@@ -132,17 +135,22 @@ const EditUserForm = (props: Props) => {
             } else {
                 analyticsSender.sendSpendingDiamons(parseInt(diamonds));
             }
+
+            if (sendEmail) {
+                sendNotification();
+            }
+
             setError('');
             setDiamonds('');
-        }
-
-        if (sendEmail) {
-            sendNotification();
         }
     }
 
     const sendNotification = () => {
-        const mailto = `mailto:${user.email}?subject=Testing out mailto!&body=${comment}`;
+        const subject = 'Магазин мерча зарплаты.ру';
+        const body = `Мы начислили тебе ${lemons} лимончиков ${comment}.%0D%0AВпервые слышишь про лимончики? Тогда сначала регистрируйся в store.zarplata.ru, а потом оформляй заказ`
+        const mailto = `
+            mailto:${user.email}?subject=${subject}&body=${body}
+        `;
         window.location.href = mailto;
     }
 

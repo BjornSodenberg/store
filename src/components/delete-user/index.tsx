@@ -57,7 +57,7 @@ const DeleteUser = () => {
             ));
 
             setLoading(true);
-            const result = await deleteUser(user.id);
+            const result = await deleteUser(user);
             setLoading(false);
 
             setStatus(result);

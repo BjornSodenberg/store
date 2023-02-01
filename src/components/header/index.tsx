@@ -66,14 +66,14 @@ const Header  = () => {
                                     </div>      
                                 </div>
                                 <ul className={style.dropdownList}>
-                                    <li className={style.dropdownItem}>
+                                    {/* <li className={style.dropdownItem}>
                                         <PasswordIcon sx={{color: '#fff'}}/>
                                         <a href="/">Сменить пароль</a>
-                                    </li>
-                                    <li className={style.dropdownItem}>
+                                    </li> */}
+                                    {/* <li className={style.dropdownItem}>
                                         <LogoutIcon sx={{color: '#fff'}}/>
                                         <a href="/">Выйти</a>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ export class AnalyticsSender {
         addDoc(collection(cloudDatabase, 'analytics'), {
             date: timestamp(),
             type: 'lemons/spend',
-            count: count
+            count: Math.abs(count)
         });
         console.log('[SA] lemons/spend');
     }
@@ -54,5 +54,20 @@ export class AnalyticsSender {
             type: 'personal/remove',
         });
         console.log('[SA] personal/remove');
+    }
+
+    public sendAcceptTransaction () {
+        addDoc(collection(cloudDatabase, 'analytics'), {
+            date: timestamp(),
+            type: 'transactions/accept',
+        });
+        console.log('[SA] transactions/accept');
+    }
+    public sendRejectTransaction () {
+        addDoc(collection(cloudDatabase, 'analytics'), {
+            date: timestamp(),
+            type: 'transactions/reject',
+        });
+        console.log('[SA] transactions/reject');
     }
 }
