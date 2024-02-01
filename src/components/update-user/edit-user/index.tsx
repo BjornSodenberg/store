@@ -100,7 +100,7 @@ const EditUserForm = (props: Props) => {
             }
 
             if (sendEmail) {
-                sendNotification();
+                sendNotification('lemons');
             }
 
             setError('');
@@ -108,18 +108,31 @@ const EditUserForm = (props: Props) => {
         }
     }
 
-    const updateDiamonds = () => {
+    const updateDiamonds = (e: any) => {
+        e.preventDefault();
+
+        if (!comment && !diamonds) {
+            setError('Введите количество алмазов и комментарий');
+            return;
+        }
+
         if (!diamonds) {
             setError('Введите число');
             return;
         }
-        const upd: User = user;
+
+        if (!comment) {
+            setError('Введите комментарий');
+            return;
+        }
+
+        let upd: User = user;
         const newValue = diamonds ? user.diamonds + parseInt(diamonds): user.diamonds;
         if (newValue < 0) {
             setError('У пользователя нет столько алмазов');
             return;
         } else {
-            upd.diamonds = newValue;
+            let upd = {...user, diamonds: newValue};
             dispatch(updateEmployer(upd));
             props.updateUser(upd);
             writeToHistory(
@@ -137,7 +150,7 @@ const EditUserForm = (props: Props) => {
             }
 
             if (sendEmail) {
-                sendNotification();
+                sendNotification('diamonds');
             }
 
             setError('');
@@ -145,9 +158,10 @@ const EditUserForm = (props: Props) => {
         }
     }
 
-    const sendNotification = () => {
-        const subject = 'Магазин мерча зарплаты.ру';
-        const body = `Мы начислили тебе ${lemons} лимончиков ${comment}.%0D%0AВпервые слышишь про лимончики? Тогда сначала регистрируйся в store.zarplata.ru, а потом оформляй заказ`
+    const sendNotification = (type: string) => {
+        const currency = type === 'diamonds' ? 'алмазов' : 'лимончиков';
+        const subject = 'Магазин мерча Зарплаты.ру';
+        const body = `Привет!%0D%0AМы начислили тебе ${lemons} ${currency} "${comment}".%0D%0AПереходи в наш магазин мерча store.zarplata.ru и оформляй заказ. Вперед за покупками!`
         const mailto = `
             mailto:${user.email}?subject=${subject}&body=${body}
         `;
@@ -303,7 +317,7 @@ const EditUserForm = (props: Props) => {
                                 <p className='description'>
                                     Здесь вы можете производить начисление или вычитание <span>алмазов</span> у сотрудника.
                                 </p>
-                                <form onSubmit={updateLemons} className="user-wallet-form">
+                                <form onSubmit={updateDiamonds} className="user-wallet-form">
                                     <UiInput
                                         icon={<DiamondIcon />}
                                         type="number"
@@ -340,7 +354,7 @@ const EditUserForm = (props: Props) => {
                                         } 
                                         label="Уведомить о начислении" 
                                     />
-                                    <button onClick={updateDiamonds} className='wallet-button'>Отправить</button>
+                                    <button type='submit' className='wallet-button'>Отправить</button>
                                 </form>
                             </div>
                         )
